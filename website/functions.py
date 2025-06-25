@@ -35,7 +35,7 @@ def process_video(video_path, output_folder):
     success, frame = video.read()
     frame_count = 0
     saved = []
-    threshold_pixels = 100
+    threshold_pixels = 300
     save_interval = 3
 
     reference_frame = None
