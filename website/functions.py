@@ -7,13 +7,27 @@ def get_vertical_shift(prev_frame, current_frame):
     band_height = 100
     y = h // 2 - band_height // 2
 
+    # Crop previous band and convert to grayscale
     prev_band = cv2.cvtColor(prev_frame[y : y + band_height, :], cv2.COLOR_BGR2GRAY)
+
+    # Convert current frame to grayscale
     curr_gray = cv2.cvtColor(current_frame, cv2.COLOR_BGR2GRAY)
 
-    res = cv2.matchTemplate(curr_gray, prev_band, cv2.TM_CCOEFF_NORMED)
-    _, _, _, max_loc = cv2.minMaxLoc(res)
+    # Ensure current frame is taller than the template band
+    ch, cw = curr_gray.shape
+    bh, bw = prev_band.shape
 
-    return abs(max_loc[1] - y)
+    if ch < bh or cw < bw:
+        print("Skipping frame: template is larger than current frame")
+        return 0
+
+    try:
+        res = cv2.matchTemplate(curr_gray, prev_band, cv2.TM_CCOEFF_NORMED)
+        _, _, _, max_loc = cv2.minMaxLoc(res)
+        return abs(max_loc[1] - y)
+    except cv2.error as e:
+        print(f"OpenCV error during template matching: {e}")
+        return 0
 
 
 def process_video(video_path, output_folder):
