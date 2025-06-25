@@ -40,7 +40,10 @@
                 class="text-white bg-green-600 hover:bg-green-800 px-5 py-2 rounded inline-block font-semibold mb-4">
                 Download All as ZIP
             </a>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div>
+                <button onclick="clearImages()" class="class="text-white bg-green-600 hover:bg-green-800 px-5 py-2 rounded inline-block font-semibold mb-4">Clear Images</button>
+            </div>
+            <div id="image-output" class="grid grid-cols-2 md:grid-cols-3 gap-4">
                 {% for shot in screenshots %}
                 <div class="flex justify-center items-center">
                     <img src="{{ url_for('views.preview_file', filename=shot) }}"
@@ -50,8 +53,13 @@
             </div>
         </div>
         {% endif %}
-
     </div>
+    <script>
+        function clearImages() {
+            const container = document.getElementById('image-output');
+            container.innerHTML = "";
+        }
+    </script>
 </body>
 
 </html>
