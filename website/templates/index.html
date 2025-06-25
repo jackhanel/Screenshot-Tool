@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Text Messages Video</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="p-8 bg-gray-50">
+    <div class="max-w-4xl mx-auto">
+
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Extract Screenshots from Message Video</h1>
+
+        <!-- How it works section -->
+        <div class="bg-white p-6 rounded shadow mb-8">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">How it works</h2>
+            <ol class="list-decimal list-inside text-gray-700 space-y-2">
+                <li>Screen-record yourself <strong>slowly</strong> scrolling through <strong>one</strong> text message conversation.</li>
+                <li>Upload this screen-recording below.</li>
+                <li>Download the images the site outputs — each showing a unique part of the conversation.</li>
+            </ol>
+        </div>
+
+        <!-- Upload form -->
+        <form method="POST" enctype="multipart/form-data" class="mb-10 bg-white p-6 rounded shadow">
+            <label class="block mb-2 font-semibold text-gray-700">Upload screen recording (.mp4, .mov, etc.):</label>
+            <input type="file" name="video" accept="video/*" class="mb-4 border border-gray-300 p-2 rounded w-full"
+                required>
+            <button type="submit" class="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2 rounded font-semibold">
+                Upload & Process
+            </button>
+        </form>
+
+        {% if screenshots %}
+        <div class="mb-6">
+            <h2 class="text-xl font-semibold mb-3 text-gray-800">Extracted Screenshots</h2>
+            <a href="{{ url_for('views.download_all') }}"
+                class="text-white bg-green-600 hover:bg-green-800 px-5 py-2 rounded inline-block font-semibold mb-4">
+                Download All as ZIP
+            </a>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {% for shot in screenshots %}
+                <div class="flex justify-center items-center">
+                    <img src="{{ url_for('views.preview_file', filename=shot) }}"
+                        class="border rounded shadow w-full max-w-xs h-auto object-contain">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</body>
+
+</html>
